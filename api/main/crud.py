@@ -32,7 +32,6 @@ def create_chatroom(db: Session, chatroom: ChatRoomCreate):
     db.refresh(db_chatroom)
     return db_chatroom
 
-# Message CRUD operations
 def get_message(db: Session, message_id: int):
     return db.query(Message).filter(Message.id == message_id).first()
 
