@@ -9,8 +9,8 @@ def get_user(db: Session, user_id: int):
 def get_user_by_username(db: Session, username: str):
     return db.query(User).filter(User.username == username).first()
 
-def get_users(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(User).offset(skip).limit(limit).all()
+def get_users(db: Session):
+    return db.query(User).all()
 
 def create_user(db: Session, user: UserCreate):
     db_user = User(username=user.username, identity_color=user.identity_color)
@@ -22,8 +22,8 @@ def create_user(db: Session, user: UserCreate):
 def get_chatroom(db: Session, chatroom_id: int):
     return db.query(ChatRoom).filter(ChatRoom.id == chatroom_id).first()
 
-def get_chatrooms(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(ChatRoom).offset(skip).limit(limit).all()
+def get_chatrooms(db: Session):
+    return db.query(ChatRoom).all()
 
 def create_chatroom(db: Session, chatroom: ChatRoomCreate):
     db_chatroom = ChatRoom(name=chatroom.name)
@@ -35,8 +35,8 @@ def create_chatroom(db: Session, chatroom: ChatRoomCreate):
 def get_message(db: Session, message_id: int):
     return db.query(Message).filter(Message.id == message_id).first()
 
-def get_messages(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Message).offset(skip).limit(limit).all()
+def get_messages(db: Session):
+    return db.query(Message).all()
 
 def create_message(db: Session, message: MessageCreate):
     db_message = Message(

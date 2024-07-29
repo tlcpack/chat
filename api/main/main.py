@@ -49,15 +49,17 @@ async def get():
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
-    now = datetime.now()
-    current_time = now.strftime("%H:%M")
     try:
         while True:
             data = await websocket.receive_text()
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
             message = {"time": current_time, "clientId": client_id, "message": data}
             await manager.broadcast(json.dumps(message))
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+        now = datetime.now()
+        current_time = now.strftime("%H:%M")
         message = {"time": current_time, "clientId": client_id, "message": "Offline"}
         await manager.broadcast(json.dumps(message))
 
@@ -84,7 +86,7 @@ def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 
 @app.get("/user/{user_id}", response_model=schemas.User)
 async def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = get_user(db, user_id=user_id)
+    user = crud.get_user(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
